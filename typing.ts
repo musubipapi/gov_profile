@@ -1,0 +1,1 @@
+export const WALLET_INJECTED = 'WALLET_INJECTED';
