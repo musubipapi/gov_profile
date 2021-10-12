@@ -16,7 +16,7 @@ const Home: NextPage = () => {
       <div className="flex justify-center mt-36">
         <img className="w-96" src="./images/diamond_logo.svg" />
       </div>
-      <div className="text-center font-mono text-2xl">
+      <div className="text-center font-mono text-2xl mt-8">
         <Typical
           steps={["Submit data. Earn Loot.", 5000]}
           loop={1}

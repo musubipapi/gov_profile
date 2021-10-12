@@ -1,0 +1,14 @@
+.Modal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 0 12px;
+  z-index: 10;
+}
+.Origin {
+  transition: transform 400ms ease;
+}
+.Flip {
+  transform: rotate(180deg);
+  transition: transform 400ms ease;
+}

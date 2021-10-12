@@ -30,7 +30,7 @@ const NavBar = () => {
       <div>
         <button
           onClick={() => login(active)}
-          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+          className="bg-primary-100 hover:bg-primary-200 font-bold py-2 px-4 rounded cursor-pointer"
         >
           {active ? "Disconnect Wallet" : "Connect Wallet"}
         </button>
