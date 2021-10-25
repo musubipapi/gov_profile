@@ -1,0 +1,154 @@
+/* CHECKMARK V1 */
+
+.circleLoader {
+  border: 2px solid var(--loading-animation-color-secondary);
+  border-left-color: var(--loading-animation-color);
+  animation: loader-spin 1400ms infinite linear;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 50%;
+  width: var(--loading-animation-size);
+  height: var(--loading-animation-size);
+}
+
+.loadComplete {
+  -webkit-animation: none;
+  animation: none;
+  border-color: var(--loading-animation-color);
+  transition: border 500ms ease-out;
+}
+
+.checkmarkV1 {
+  display: block;
+  transform: scaleX(-1) rotate(135deg);
+  height: var(--loading-animation-height-spacing);
+  width: var(--loading-animation-width-spacing);
+  transform-origin: left top;
+  border-right: 2px solid var(--loading-animation-color);
+  border-top: 2px solid var(--loading-animation-color);
+  content: "";
+  left: var(--loading-animation-left-spacing);
+  top: var(--loading-animation-top-spacing);
+  position: absolute;
+  opacity: 0;
+}
+
+.loadComplete .checkmarkV1 {
+  opacity: 1;
+  animation-duration: 800ms;
+  animation-timing-function: ease;
+  animation-name: checkmark;
+}
+
+@keyframes loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes checkmark {
+  0% {
+    height: 0;
+    width: 0;
+    opacity: 1;
+  }
+  20% {
+    height: 0;
+    width: var(--loading-animation-width-spacing);
+    opacity: 1;
+  }
+  40% {
+    height: var(--loading-animation-height-spacing);
+    width: var(--loading-animation-width-spacing);
+    opacity: 1;
+  }
+  100% {
+    height: var(--loading-animation-height-spacing);
+    width: var(--loading-animation-width-spacing);
+    opacity: 1;
+  }
+}
+
+/* CHECKMARK V2 */
+
+.stateIcon {
+  height: var(--loading-animation-size);
+}
+
+.loading {
+  width: var(--loading-animation-size);
+  height: var(--loading-animation-size);
+  border-radius: 50%;
+  border: 2px solid var(--loading-animation-color);
+  border-top-color: var(--loading-animation-color-secondary);
+  animation: loading 1400ms linear infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading,
+.checkmark {
+  transition: opacity 500ms ease;
+}
+
+.checkmarkCircle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: var(--loading-animation-color);
+  fill: none;
+
+  animation: stroke 600ms cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark {
+  width: var(--loading-animation-size);
+  height: var(--loading-animation-size);
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: var(--loading-animation-color-secondary);
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px var(--loading-animation-color);
+  animation: fill 400ms ease-in-out 400ms forwards,
+    scale 300ms ease-in-out 900ms both;
+}
+
+.checkmarkCheck {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 300ms cubic-bezier(0.65, 0, 0.45, 1) 800ms forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes scale {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 300px var(--loading-animation-color);
+  }
+}

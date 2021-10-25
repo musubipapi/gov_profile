@@ -1,10 +1,11 @@
 import type { NextPage } from "next";
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout } from "../components/Layout";
 //@ts-ignore
 import Typical from "react-typical";
 import { useWeb3React } from "@web3-react/core";
 import Router from "next/router";
+import axios from "axios";
 
 const Home: NextPage = () => {
   const { active } = useWeb3React();

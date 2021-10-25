@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useWeb3React } from "@web3-react/core";
 import { injected } from "../../utils/web3";
 import { WALLET_INJECTED } from "../../typing";
+import { Router, useRouter } from "next/router";
 
 const NavBar = () => {
   const { active, activate, deactivate } = useWeb3React();
-
+  const router = useRouter();
   const login = async (isActive: boolean) => {
     try {
       if (isActive) {
@@ -16,6 +17,7 @@ const NavBar = () => {
       } else {
         await activate(injected);
         localStorage.setItem(WALLET_INJECTED, "injected");
+        router.query?.from && router.push(router.query.from as string);
       }
     } catch (err) {
       console.log(err);
