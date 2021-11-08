@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 import { useWeb3React } from "@web3-react/core";
-import { injected } from "../../utils/web3";
+import { injected } from "../../common/web3";
 import { WALLET_INJECTED } from "../../typing";
 import { Router, useRouter } from "next/router";
 

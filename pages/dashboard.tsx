@@ -22,12 +22,12 @@ const Home: NextPage = () => {
             </>
           </Card>
         </>
-        <Card link="/forms?name=Wallet">
+        {/* <Card link="/forms?name=Wallet">
           <div className="font-bold text-2xl mb-2 flex flex-col items-center text-white-700">
             Wallet Information
             <IoIosWallet size="5em" />
           </div>
-        </Card>
+        </Card> */}
       </div>
     </Layout>
   );

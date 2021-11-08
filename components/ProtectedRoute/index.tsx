@@ -2,6 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import router, { useRouter } from "next/router";
 import Router from "next/router";
 import { FC, useEffect, useState } from "react";
+import { LoadingComponent } from "../LoadingComponent";
 import { Spinner } from "../Spinner";
 
 interface IProtectedRoute {
@@ -24,10 +25,7 @@ export const ProtectedRoute: FC<IProtectedRoute> = ({ children }) => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center flex-col mt-40">
-        <Spinner color={"black"} width="100" height="100" />
-        <div className="mt-8">Loading</div>
-      </div>
+      <LoadingComponent />
     );
   } else if (!active && !isLoading && window.location.pathname !== "/") {
     Router.push({

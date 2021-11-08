@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import React, { FC, useEffect, useState } from "react";
 import { WALLET_INJECTED } from "../../typing";
-import { injected } from "../../utils/web3";
+import { injected } from "../../common/web3";
 import { Spinner } from "../Spinner";
 
 interface IMetamaskProvider {
