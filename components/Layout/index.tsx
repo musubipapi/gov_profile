@@ -18,7 +18,7 @@ export const Layout: FC<ILayout> = ({ children }) => {
     if (library) {
       library
         .getBalance(account)
-        .then((balance: ethers.utils.BigNumberish) =>
+        .then((balance: ethers.BigNumberish) =>
           setBalance(ethers.utils.formatEther(balance))
         );
     }
