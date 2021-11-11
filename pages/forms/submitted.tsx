@@ -1,9 +1,6 @@
-import { useWeb3React } from "@web3-react/core";
-import { ethers } from "ethers";
 import type { NextPage } from "next";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Layout } from "../../components/Layout";
-import { Spinner } from "../../components/Spinner";
 
 const SubmittedForm: NextPage = () => {
   return (

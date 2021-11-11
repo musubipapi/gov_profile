@@ -15,16 +15,21 @@ export const Layout: FC<ILayout> = ({ children }) => {
   const [displayModal, setDisplayModal] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     if (library) {
       library
         .getBalance(account)
-        .then((balance: ethers.BigNumberish) =>
-          setBalance(ethers.utils.formatEther(balance))
+        .then(
+          (balance: ethers.BigNumberish) =>
+            isMounted && setBalance(ethers.utils.formatEther(balance))
         );
     }
+    return () => {
+      isMounted = false;
+    };
   }, [account]);
   return (
-    <div className="container mx-auto md:px-36 px-12 font-mono">
+    <div className="container mx-auto md:px-48 px-12 font-mono">
       <NavBar />
       {children}
       {active && (

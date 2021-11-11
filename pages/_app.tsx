@@ -8,6 +8,7 @@ import { SWRConfig } from "swr";
 import axios from "axios";
 import { ChakraProvider } from "@chakra-ui/react";
 import { theme } from "../common/theme";
+import React from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

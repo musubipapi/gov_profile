@@ -29,9 +29,10 @@ interface IFormItem {
   onChange: (value: string) => void;
 }
 
-/* 
-FormItem is used to dynamicallly return the type of input specified by metadata described in the Google Sheets
-*/
+/*
+ * FormItem is used to dynamicallly return the type of
+ * input specified by metadata described in the Google Sheets
+ */
 export const FormItem: FC<IFormItem> = ({
   name,
   metadata,

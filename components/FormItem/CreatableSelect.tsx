@@ -26,20 +26,25 @@ export const CreatableSelect: FC<ICreatableSelect> = ({
 
   //Gets all the values of the primary key column
   useEffect(() => {
+    let isMounted = true;
     axios.get(`/api/form/values?name=${name}&type=pk`).then((pk) => {
       const rawOptions = (pk.data as any).data
         .splice(2)
         .map((option: string[]) => option[0]);
 
-      rawOptions.map((option: any, idx: any) =>
-        setOptionsOrder(new Map(optionsOrder.set(option, idx)))
+      rawOptions.map(
+        (option: any, idx: any) =>
+          isMounted && setOptionsOrder(new Map(optionsOrder.set(option, idx)))
       );
 
       const options = (Array.from(new Set(rawOptions)) as string[]).map(
         (name: string) => transformValueToSelect(name)
       );
-      setOptions(options);
+      isMounted && setOptions(options);
     });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleCreate = async (inputValue: string) => {

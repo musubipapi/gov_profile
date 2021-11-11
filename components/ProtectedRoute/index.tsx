@@ -1,5 +1,4 @@
 import { useWeb3React } from "@web3-react/core";
-import router, { useRouter } from "next/router";
 import Router from "next/router";
 import { FC, useEffect, useState } from "react";
 import { LoadingComponent } from "../LoadingComponent";
@@ -24,9 +23,7 @@ export const ProtectedRoute: FC<IProtectedRoute> = ({ children }) => {
   }, [active]);
 
   if (isLoading) {
-    return (
-      <LoadingComponent />
-    );
+    return <LoadingComponent />;
   } else if (!active && !isLoading && window.location.pathname !== "/") {
     Router.push({
       pathname: "/",

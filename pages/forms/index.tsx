@@ -1,20 +1,14 @@
-import { useWeb3React } from "@web3-react/core";
-import axios from "axios";
-import { ethers } from "ethers";
 import type { NextPage } from "next";
-import Router, { useRouter } from "next/router";
-import React, { ReactElement, useEffect, useState } from "react";
-import { FormItem } from "../../components/FormItem";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { Layout } from "../../components/Layout";
 import { LoadingComponent } from "../../components/LoadingComponent";
-import { useGetForm } from "../../hooks/use-get-form-data";
-
-const Spacing = ({ children }: { children: ReactElement }) => (
-  <div className="my-5 flex-col">{children}</div>
-);
+import Select from "react-select";
+import { getPkArray } from "../../common/get-pk-array";
+import { Box, Button, Stack, Text, useTheme } from "@chakra-ui/react";
+import * as styles from "../../components/FormItem/styles";
 
 const Form: NextPage = () => {
-  const { account } = useWeb3React();
   const router = useRouter();
   const name = router.query.name;
 
@@ -22,104 +16,89 @@ const Form: NextPage = () => {
   if (!name) {
     router.push("/");
   }
-  const [formValues, setFormValues] = useState(new Map());
 
-  const updateFormValues = (k: any, v: any) => {
-    setFormValues(new Map(formValues.set(k, v)));
-  };
-  const { form, isLoading } = useGetForm(name as string);
-  const { data } = !isLoading && form;
-
-  const [attributeRow, metadataRow] = data || [];
+  const [value, setValue] = useState<
+    { value: String; label: string } | undefined
+  >(undefined);
+  const [isDAOLoading, setIsDAOLoading] = useState(true);
+  const [options, setOptions] = useState<{ value: String; label: string }[]>(
+    []
+  );
+  const { colors } = useTheme();
 
   useEffect(() => {
-    if (attributeRow) {
-      attributeRow.map((item: string) => {
-        updateFormValues(item, "");
-      });
-      updateFormValues("Wallet", account);
-    }
-  }, [attributeRow]);
-
-  const handleFillFormWithPK = async (row?: number) => {
-    try {
-      console.log(row);
-      if (!row) {
-        throw "No row number";
-      }
-      const pkRow = (
-        (await axios.get(
-          `/api/form/values?name=${name}&type=row&row=${row}`
-        )) as any
-      ).data.data;
-      if (!pkRow) {
-        throw "No primary key row";
-      }
-      attributeRow.map((item: string, idx: number) => {
-        updateFormValues(item, pkRow[0][idx]);
-      });
-    } catch (e) {
-      attributeRow.map((item: string, idx: number) => {
-        updateFormValues(item, "");
-      });
-    }
-
-    updateFormValues("Wallet", account);
-  };
-
-  const questionComponent = attributeRow
-    ?.slice(1)
-    .map((attribute: string, idx: number) => {
-      const index = idx + 1; //true index since we sliced out wallet col
-      let metadata;
-      if (index in metadataRow) {
-        try {
-          metadata = JSON.parse(metadataRow[index]);
-        } catch (e) {}
-      }
-      if (metadata?.hideAttribute === true) {
-        return null;
-      }
-      return (
-        <Spacing key={attribute}>
-          <>
-            <div className="text-lg">{metadata?.question ?? attribute}</div>
-            <FormItem
-              name={name as string}
-              handleFillFormWithPK={handleFillFormWithPK}
-              metadata={metadata}
-              onChange={(value: string) => {
-                updateFormValues(attribute, value);
-              }}
-              value={formValues.get(attribute) || ""}
-            />
-          </>
-        </Spacing>
-      );
+    getPkArray(name as string).then((pkArray) => {
+      setOptions(pkArray);
+      setIsDAOLoading(false);
     });
+  }, [name]);
+
+  const handleContinue = () => {
+    const option = options.find((option) => option.value === value?.value);
+    const id = option?.label.split("-")[0];
+    router.push(`/forms/page?name=${name}&id=${Number(id)}`);
+  };
 
   return (
     <Layout>
-      {!isLoading && (
-        <div className="mt-10 mb-24">
-          <h1 className="text-3xl text-center">{name} Form</h1>
-          {questionComponent}
-          <button
-            onClick={() => {
-              axios
-                .post(`/api/form?name=${name}`, {
-                  formValues: Array.from(formValues.values()),
-                })
-                .then((_) => Router.push("/forms/submitted"))
-                .catch((_) => Router.push("/forms/error"));
-            }}
-            className="bg-primary-100 hover:bg-primary-200 font-bold mt-4 py-2 px-4 rounded"
-          >
-            Submit
-          </button>
-        </div>
+      {!isDAOLoading && (
+        <>
+          <Stack spacing="6">
+            <Text fontSize="2xl" textAlign="center">
+              DAO Data Entry
+            </Text>
+            {/* <Text>
+              Before Diamond DAO had fully coalesced as an organization, we set
+              the intention of building a reference dataset on DAOs that
+              Chainverse could draw from as a "DAOrectory."
+            </Text>
+            <Text>
+              The DAOrectory was supposed to include key context on DAOs covered
+              by Chainverse, including (i) DAO type (i.e. Product/Grants) , (ii)
+              DAO identifiers (i.e. Discord/Website), and other information
+              critical for understanding and analyzing DAOs (i.e. membership
+              requirements).
+            </Text>
+            <Text>
+              Our products will rely on this reference dataset to deliver
+              metrics and insights to users; for instance, without understanding
+              the membership requirements of a DAO, it's impossible for
+              Chainverse to report on how many members a DAO has.
+            </Text>
+            <Text>
+              We are building the DAOrectory through work-streams (i) automated
+              data collection (i.e. building pipelines to scrape data from the
+              Snapshot API and the DAOhaus Subgraph) and (ii) manual data
+              collection (i.e. visiting the websites and Discords of DAOs to
+              collect key information that we cannot scrape.)
+            </Text> */}
+            <div>
+              <Box my="6">
+                <Text fontWeight="600">Select a DAO to start from:</Text>
+              </Box>
+              <Select
+                placeholder="Select a DAO from the dropdown or type to filter"
+                captureMenuScroll
+                isClearable
+                styles={styles.customSelectStyles(colors)}
+                onChange={(val: any) => setValue(val)}
+                options={options as any}
+                value={value}
+              />
+            </div>
+            {value && (
+              <Button
+                backgroundColor="primary.100"
+                _hover={{ backgroundColor: "primary.200" }}
+                onClick={handleContinue}
+              >
+                Continue
+              </Button>
+            )}
+          </Stack>
+        </>
       )}
-      {isLoading && <LoadingComponent />}
+      {isDAOLoading && <LoadingComponent />}
     </Layout>
   );
 };

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useWeb3React } from "@web3-react/core";
 import { injected } from "../../common/web3";
 import { WALLET_INJECTED } from "../../typing";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 const NavBar = () => {
   const { active, activate, deactivate } = useWeb3React();

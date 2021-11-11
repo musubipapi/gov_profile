@@ -1,5 +1,3 @@
-// Helper fns to transform value to select format and vice versa
-
 export const transformValueToMultiSelect = (value: string) => {
   if (!value) {
     return null;

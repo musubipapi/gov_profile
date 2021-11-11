@@ -30,14 +30,13 @@ export default async function handler(
       case "POST":
         const { body } = req;
         const { formValues } = body;
-        console.log(formValues);
         const updatedSheet = await appendSpreadSheetValues({
           auth,
           spreadsheetId,
           sheetName: `${name}!A:A`,
           values: [formValues],
         });
-        res.status(200).json({ updatedSheet: true });
+        res.status(200).json({ updatedSheet });
         break;
       default:
         res.status(400).json({ success: false });
