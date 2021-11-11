@@ -11,6 +11,7 @@ import { useGetForm } from "../../hooks/use-get-form-data";
 import { getPkArray } from "../../common/get-pk-array";
 import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
 import { LoadingComponent } from "../../components/LoadingComponent";
+import { useGetScoreboard } from "../../hooks/use-get-scoreboard";
 
 const FormPage: NextPage = () => {
   const { account } = useWeb3React();
@@ -39,6 +40,8 @@ const FormPage: NextPage = () => {
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
 
   const [goToNext, setGoToNext] = useState(false);
+
+  const { mutateScoreboard } = useGetScoreboard();
 
   useEffect(() => {
     setGoToNext(false);
@@ -163,6 +166,7 @@ const FormPage: NextPage = () => {
           status: "success",
           isClosable: true,
         });
+        mutateScoreboard();
         setGoToNext(true);
       })
       .catch((_) => {

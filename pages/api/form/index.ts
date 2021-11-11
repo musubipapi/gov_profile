@@ -13,16 +13,17 @@ export default async function handler(
 ) {
   try {
     const { method, query } = req;
-    const { name } = query;
+    const { name, dimension } = query;
     const auth = await getAuthToken();
     const spreadsheetId = process.env.SPREADSHEET_ID as string;
     switch (method) {
       case "GET":
+        const area = dimension ?? "1:2";
         const sheet = await getSpreadSheetValues({
           auth,
           spreadsheetId,
           //get the first two rows of spreadsheet which contains attributes & metadata
-          sheetName: `${name}!1:2`,
+          sheetName: `${name}!${area}`,
         });
         const data = sheet?.data.values;
         res.status(200).json({ data });

@@ -4,6 +4,8 @@ import React, { FC, useEffect, useState } from "react";
 import { IoIosArrowUp } from "react-icons/io";
 import NavBar from "../NavBar";
 import styles from "../../styles/Layout.module.css";
+import axios from "axios";
+import { useGetScoreboard } from "../../hooks/use-get-scoreboard";
 
 interface ILayout {
   children: React.ReactNode;
@@ -11,23 +13,26 @@ interface ILayout {
 
 export const Layout: FC<ILayout> = ({ children }) => {
   const { active, account, library } = useWeb3React();
-  const [balance, setBalance] = useState("");
+  const [scoreboard, setScoreboard] = useState(0);
   const [displayModal, setDisplayModal] = useState(false);
+  const { data, isLoading } = useGetScoreboard();
 
   useEffect(() => {
     let isMounted = true;
-    if (library) {
-      library
-        .getBalance(account)
-        .then(
-          (balance: ethers.BigNumberish) =>
-            isMounted && setBalance(ethers.utils.formatEther(balance))
-        );
+    if (!isLoading) {
+      const scoreboardArray = data?.data.map((row: string[]) => row[0]);
+      let count = scoreboardArray.reduce(
+        (accumlatedCount: number, curVal: string) =>
+          accumlatedCount + ((curVal === account) as unknown as number),
+        0
+      );
+      if (isMounted) setScoreboard(count);
     }
     return () => {
       isMounted = false;
     };
-  }, [account]);
+  }, [data, isLoading]);
+
   return (
     <div className="container mx-auto md:px-48 px-12 font-mono">
       <NavBar />
@@ -48,8 +53,7 @@ export const Layout: FC<ILayout> = ({ children }) => {
             className="bg-primary-100 px-2 pb-4"
           >
             <div>Wallet: {account} </div>
-            <div>Balance: {balance} </div>
-            <div>Loot Earned: 0.0 </div>
+            <div>Entries submitted: {scoreboard} </div>
           </div>
         </div>
       )}
