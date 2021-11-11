@@ -139,8 +139,8 @@ const FormPage: NextPage = () => {
     const pkArray = (await getPkArray(name as string)).map(
       (item: any) => item.value
     );
-
-    if (!(DAO in pkArray)) {
+    console.log(pkArray, DAO);
+    if (!pkArray.includes(DAO)) {
       toast({
         title: `This DAO has already been reviewed.`,
         position: "top",

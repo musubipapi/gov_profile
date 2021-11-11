@@ -1,4 +1,5 @@
 import axios from "axios";
+import { removeDuplicatesBy } from "./helper";
 
 /*
  * returns the Primary Key which haven't be QA'd by comparing the raw sheet and QA sheet
@@ -32,5 +33,5 @@ export const getPkArray = async (name: string, index?: number) => {
     []
   );
 
-  return filteredArray;
+  return removeDuplicatesBy((x: any) => x.value, filteredArray);
 };
