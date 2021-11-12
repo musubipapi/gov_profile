@@ -218,6 +218,15 @@ const FormPage: NextPage = () => {
           >
             {goToNext || alreadyReviewed ? "Next" : "Submit"}
           </Button>
+          <Button
+            ml="4"
+            variant="outline"
+            colorScheme={"blue"}
+            my="12"
+            onClick={nextPageHandler}
+          >
+            Skip
+          </Button>
         </>
       )}
       {isDAOValuesLoading || (isLoading && <LoadingComponent />)}
